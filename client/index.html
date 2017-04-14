@@ -1,0 +1,42 @@
+﻿<!doctype html>
+<html ng-app="app">
+
+<head>
+	<meta charset="utf-8">
+	<title>Advanced Database Project</title>
+	<link href="css/bootstrap.min.css" rel="stylesheet" />
+	<link href="css/font-awesome.css" rel="stylesheet" />
+	<link href="css/style.css" rel="stylesheet" />
+	<!-- Load js dep -->
+	<script src="js/lib/angular.min.js"></script>
+	<script src="js/lib/jquery-3.1.1.slim.min.js"></script>
+    <script src="js/lib/tether.min.js"></script>
+	<script src="js/lib/bootstrap.min.js"></script>
+	<script src="js/app.js"></script>
+
+	<link href="js/lib/leaflet/leaflet.css" rel="stylesheet" />
+	<script src="js/lib/leaflet/leaflet.js"></script>
+</head>
+
+<body ng-controller="appController">
+	<div class="container" style="padding-top: 50px">
+		<div class="row" ng-init="init()">
+			<div class="col-lg-8">
+				<div class="card">
+					<div class="card-block">
+						<div id="mapid" style="height: 600px;"></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4">
+				<div class="card">
+					<div class="card-block">
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
