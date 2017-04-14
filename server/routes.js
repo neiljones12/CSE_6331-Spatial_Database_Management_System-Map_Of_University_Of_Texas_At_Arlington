@@ -27,4 +27,52 @@ module.exports = function (app) {
 		});
 	});
 
+	app.get('/onCampus', function (req, res) {
+	    var data = [];
+	    var query = client.query('SELECT name,st_asgeojson(geom) as geom FROM "on-campus-apartments"');
+	    query.on('row', function (row) {
+	        data.push(row);
+	    });
+
+	    query.on('end', function () {
+	        res.json(data);
+	    });
+	});
+
+	app.get('/offCampus', function (req, res) {
+	    var data = [];
+	    var query = client.query('SELECT name,st_asgeojson(geom) as geom FROM "off-campus-apartments"');
+	    query.on('row', function (row) {
+	        data.push(row);
+	    });
+
+	    query.on('end', function () {
+	        res.json(data);
+	    });
+	});
+
+	app.get('/roads', function (req, res) {
+	    var data = [];
+	    var query = client.query('SELECT name,st_asgeojson(geom) as geom FROM roads');
+	    query.on('row', function (row) {
+	        data.push(row);
+	    });
+
+	    query.on('end', function () {
+	        res.json(data);
+	    });
+	});
+
+	app.get('/parks', function (req, res) {
+	    var data = [];
+	    var query = client.query('SELECT name,st_asgeojson(geom) as geom FROM "parks-and-playgrounds"');
+	    query.on('row', function (row) {
+	        data.push(row);
+	    });
+
+	    query.on('end', function () {
+	        res.json(data);
+	    });
+	});
+
 };
