@@ -18,11 +18,12 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
     $scope.init = function () {
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
             maxZoom: 18,
-            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-            '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-            'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+            attribution: 'Advanced Database - 6331 | Neil Jones - 1001371689',
             id: 'mapbox.streets'
         }).addTo(mymap);
+
+        $scope.result = [];
+        $scope.detailedResult = [];
     };
 
     $scope.clear = function () {
@@ -39,6 +40,10 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
         }).then(function successCallback(response) {
             for (var i = 0; i < response.data.length; i++) {
                 var name = response.data[i].name;
+
+                var data = { name: name, type: "buildings" };
+                $scope.result.push(data);
+
                 var coordinates = JSON.parse(response.data[i].geom);
                 //console.log(coordinates.coordinates);
                 for (var j = 0; j < coordinates.coordinates.length; j++) {
@@ -56,6 +61,10 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                     var bounds = result;
 
                     //L.marker(result[0]).addTo(mymap).bindPopup(name).openPopup();
+
+                    var data = { name: name, bounds: bounds };
+
+                    $scope.detailedResult.push(data);
 
                     // create an orange rectangle
                     L.polygon(bounds, { color: "#ff7800", weight: 1 }).addTo(mymap).bindPopup(name);
@@ -79,6 +88,10 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
         }).then(function successCallback(response) {
             for (var i = 0; i < response.data.length; i++) {
                 var name = response.data[i].name;
+
+                var data = { name: name, type: "onCampus" };
+                $scope.result.push(data);
+
                 var coordinates = JSON.parse(response.data[i].geom);
                 //console.log(coordinates.coordinates);
                 for (var j = 0; j < coordinates.coordinates.length; j++) {
@@ -96,6 +109,10 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                     var bounds = result;
 
                     //L.marker(result[0]).addTo(mymap).bindPopup(name).openPopup();
+
+                    var data = { name: name, bounds: bounds };
+
+                    $scope.detailedResult.push(data);
 
                     // create an orange rectangle
                     L.polygon(bounds, { color: "#2980b9", weight: 1 }).addTo(mymap).bindPopup(name);
@@ -119,6 +136,10 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
         }).then(function successCallback(response) {
             for (var i = 0; i < response.data.length; i++) {
                 var name = response.data[i].name;
+
+                var data = { name: name, type: "offCampus" };
+                $scope.result.push(data);
+
                 var coordinates = JSON.parse(response.data[i].geom);
                 //console.log(coordinates.coordinates);
                 for (var j = 0; j < coordinates.coordinates.length; j++) {
@@ -136,6 +157,10 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                     var bounds = result;
 
                     //L.marker(result[0]).addTo(mymap).bindPopup(name).openPopup();
+
+                    var data = { name: name, bounds: bounds };
+
+                    $scope.detailedResult.push(data);
 
                     // create an orange rectangle
                     L.polygon(bounds, { color: "#8e44ad", weight: 1 }).addTo(mymap).bindPopup(name);
@@ -159,6 +184,10 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
         }).then(function successCallback(response) {
             for (var i = 0; i < response.data.length; i++) {
                 var name = response.data[i].name;
+
+                var data = { name: name, type: "parks" };
+                $scope.result.push(data);
+
                 var coordinates = JSON.parse(response.data[i].geom);
                 //console.log(coordinates.coordinates);
                 for (var j = 0; j < coordinates.coordinates.length; j++) {
@@ -176,6 +205,10 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                     var bounds = result;
 
                     //L.marker(result[0]).addTo(mymap).bindPopup(name).openPopup();
+
+                    var data = { name: name, bounds: bounds };
+
+                    $scope.detailedResult.push(data);
 
                     // create an orange rectangle
                     L.polygon(bounds, { color: "#27ae60", weight: 1 }).addTo(mymap).bindPopup(name);
@@ -201,8 +234,8 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                 var name = response.data[i].name;
                 var coordinates = JSON.parse(response.data[i].geom);
                 for (var j = 0; j < coordinates.coordinates.length; j++) {
-                     
-                   
+
+
                 }
             }
             //var pointA = new L.LatLng(28.635308, 77.22496);
@@ -220,5 +253,32 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
         }, function errorCallback(response) {
             console.log(response);
         });
+    }
+
+    $scope.search = function () {
+        $scope.result = [];
+        $scope.detailedResult = [];
+
+        if ($scope.buildings) {
+            $scope.findAllBuildings();
+        }
+        if ($scope.onCampus) {
+            $scope.findAllOnCampus();
+        }
+        if ($scope.offCampus) {
+            $scope.findAllOffCampus();
+        }
+        if ($scope.parks) {
+            $scope.findAllParks();
+        }
+    }
+
+    $scope.popup = function (name) {
+        for (var i = 0; i < $scope.detailedResult.length; i++) {
+            if ($scope.detailedResult[i].name == name)
+            {
+                L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name).openPopup();
+            }
+        }
     }
 }]);

@@ -25,18 +25,33 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-5">
+            <div class="col-lg-5"> 
                 <div class="card">
                     <div class="card-block">
-                        <button type="button" class="btn btn-secondary" ng-click="findAllBuildings()">All Buildings</button>
-                        <button type="button" class="btn btn-secondary" ng-click="findAllOnCampus()">On Campus</button>
-                        <button type="button" class="btn btn-secondary" ng-click="findAllOffCampus()">Off Campus</button>
-                        <button type="button" class="btn btn-secondary" ng-click="findAllParks()">Parks</button>
-                        <!--<button type="button" class="btn btn-secondary" ng-click="findAllRoads()">Roads</button>--> 
-                        <hr/>
-                        <button type="button" class="btn btn-secondary" ng-click="clear()">Clear</button> 
+                        <h2>Search</h2><hr /> 
+                        <input type="checkbox" ng-model="buildings" /> Buildings
+                        <input type="checkbox" ng-model="onCampus" /> On campus Apartments
+                        <input type="checkbox" ng-model="offCampus" /> Off Campus Apartments
+                        <input type="checkbox" ng-model="parks" /> Parks 
+                        <hr />
+                        <div class="form-group">
+                            <input type="text" class="form-control"  placeholder="Search">
+                        </div>
+                        <hr />
+                        <button type="button" class="btn btn-secondary" ng-click="search()">Search</button>
+                        <button type="button" class="btn btn-secondary" ng-click="clear()">Clear</button>
                     </div>
                 </div>
+                <br/>
+                <div class="card">
+                    <div class="card-block"  style="overflow:scroll; height:400px;">
+                        <h2>Result</h2><hr /> 
+                        <div ng-repeat="r in result"> 
+                                <span ng-class="r.type" ng-click="popup(r.name)">{{r.name}}</span> 
+                            <br />
+                        </div> 
+                    </div>
+                </div> 
             </div>
         </div>
     </div>
