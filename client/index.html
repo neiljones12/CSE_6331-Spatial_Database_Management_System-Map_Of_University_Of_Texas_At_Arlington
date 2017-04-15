@@ -14,6 +14,7 @@
     <script src="js/app.js"></script>
     <link href="js/lib/leaflet/leaflet.css" rel="stylesheet" />
     <script src="js/lib/leaflet/leaflet.js"></script>
+    <script src="js/lib/autocomplete.js"></script>
 </head>
 <body ng-controller="appController">
     <div class="" style="padding: 50px">
@@ -33,18 +34,31 @@
                         <input type="checkbox" ng-model="onCampus" /> On campus Apartments
                         <input type="checkbox" ng-model="offCampus" /> Off Campus Apartments
                         <input type="checkbox" ng-model="parks" /> Parks 
-                        <hr />
-                        <div class="form-group">
-                            <input type="text" class="form-control"  placeholder="Search">
+                        <hr /> 
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Range</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" placeholder="Range (miles)" ng-model="radius">
+                            </div>
                         </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">From</label>
+                            <div class="col-sm-10">
+                                <autocomplete ng-model="from" data="names"></autocomplete>
+                            </div>
+                        </div>
+                        
                         <hr />
                         <button type="button" class="btn btn-secondary" ng-click="search()">Search</button>
                         <button type="button" class="btn btn-secondary" ng-click="clear()">Clear</button>
+                        <hr />
+                        <input type="checkbox" ng-model="marker" /> Show marker
                     </div>
                 </div>
                 <br/>
                 <div class="card">
-                    <div class="card-block"  style="overflow:scroll; height:400px;">
+                    <div class="card-block"  style="overflow:scroll; height:220px;">
                         <h2>Result</h2><hr /> 
                         <div ng-repeat="r in result"> 
                                 <span ng-class="r.type" ng-click="popup(r.name)">{{r.name}}</span> 
