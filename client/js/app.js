@@ -151,7 +151,7 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                     // zoom the map to the rectangle bounds
                     //mymap.fitBounds(bounds);
                 }
-            } 
+            }
         }, function errorCallback(response) {
             console.log(response);
         });
@@ -288,9 +288,9 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
 
     $scope.find = function () {
         var data = { name: $scope.from };
-
+        
         $http({
-            url: "/search",
+            url: "/searchByName",
             method: "get",
             params: { data: data }
         }).then(function successCallback(response) {
@@ -319,9 +319,39 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                     $scope.detailedResult.push(data);
                     L.polygon(bounds, { color: "#27ae60", weight: 1 }).addTo(mymap).bindPopup(name);
 
-                    if ($scope.marker)
-                    {
+                    if ($scope.marker) {
                         L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name).openPopup();
+                    }
+
+
+                    if ($scope.radius != "" && $scope.radius > -1) {
+                        var circle = L.circle(bounds[0], {
+                            color: 'red',
+                            fillColor: '#f03',
+                            fillOpacity: 0.5,
+                            radius: $scope.radius
+                        }).addTo(mymap);
+
+                        var data = { radius: $scope.radius, bounds: bounds[0] };
+
+                        var radius = $scope.radius * 1000;
+
+                        var circle = L.circle(bounds[0], {
+                            color: 'red',
+                            fillColor: '#f03',
+                            fillOpacity: 0.5,
+                            radius: radius
+                        }).addTo(mymap);
+
+                        //$http({
+                        //    url: "/searchByRadius",
+                        //    method: "get",
+                        //    params: { data: data }
+                        //}).then(function successCallback(response) {
+
+                        //}, function errorCallback(response) {
+                        //    console.log(response);
+                        //});
                     }
                     // zoom the map to the rectangle bounds
                     //mymap.fitBounds(bounds);
