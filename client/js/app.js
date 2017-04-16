@@ -288,7 +288,7 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
 
     $scope.find = function () {
         var data = { name: $scope.from };
-        
+
         $http({
             url: "/searchByName",
             method: "get",
@@ -298,9 +298,9 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
             for (var i = 0; i < response.data.length; i++) {
                 var name = response.data[i].name;
 
-                var data = { name: name, type: "parks" };
+                var data = { name: name, type: "" };
                 $scope.result.push(data);
-
+                var geom_org = response.data[i].geom_org;
                 var coordinates = JSON.parse(response.data[i].geom);
                 for (var j = 0; j < coordinates.coordinates.length; j++) {
 
@@ -325,33 +325,58 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
 
 
                     if ($scope.radius != "" && $scope.radius > -1) {
-                        var circle = L.circle(bounds[0], {
-                            color: 'red',
-                            fillColor: '#f03',
-                            fillOpacity: 0.5,
-                            radius: $scope.radius
-                        }).addTo(mymap);
 
-                        var data = { radius: $scope.radius, bounds: bounds[0] };
+                        var radius = $scope.radius * 1609.34; //converting meters to miles
 
-                        var radius = $scope.radius * 1000;
+                        var data = { radius: radius/170000, geom_org: geom_org, buildings: $scope.buildings, onCampus: $scope.onCampus, offCampus: $scope.offCampus, parks: $scope.parks };
+
 
                         var circle = L.circle(bounds[0], {
                             color: 'red',
                             fillColor: '#f03',
-                            fillOpacity: 0.5,
+                            fillOpacity: 0.3,
                             radius: radius
                         }).addTo(mymap);
 
-                        //$http({
-                        //    url: "/searchByRadius",
-                        //    method: "get",
-                        //    params: { data: data }
-                        //}).then(function successCallback(response) {
+                        $http({
+                            url: "/searchByRadius",
+                            method: "get",
+                            params: { data: data }
+                        }).then(function successCallback(response) {
 
-                        //}, function errorCallback(response) {
-                        //    console.log(response);
-                        //});
+                            for (var i = 0; i < response.data.length; i++) {
+                                var name = response.data[i].name;
+
+                                var data = { name: name, type: "parks" };
+                                $scope.result.push(data);
+                                var coordinates = JSON.parse(response.data[i].geom);
+                                for (var j = 0; j < coordinates.coordinates.length; j++) {
+
+                                    var result = [];
+                                    for (var k = 0; k < coordinates.coordinates[j][0].length; k++) {
+                                        var r = coordinates.coordinates[j][0][k];
+                                        var data = [];
+                                        data.push(r[1]);
+                                        data.push(r[0]);
+                                        result.push(data);
+                                    }
+
+                                    var bounds = result;
+                                    var data = { name: name, bounds: bounds };
+
+                                    $scope.detailedResult.push(data);
+                                    L.polygon(bounds, { color: "#27ae60", weight: 1 }).addTo(mymap).bindPopup(name);
+                                    if ($scope.marker) {
+                                        L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name).openPopup();
+                                    }
+                                    // zoom the map to the rectangle bounds
+                                    //mymap.fitBounds(bounds);
+                                }
+                            }
+
+                        }, function errorCallback(response) {
+                            console.log(response);
+                        });
                     }
                     // zoom the map to the rectangle bounds
                     //mymap.fitBounds(bounds);

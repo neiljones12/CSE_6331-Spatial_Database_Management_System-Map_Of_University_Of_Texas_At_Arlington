@@ -20,10 +20,10 @@ module.exports = function (app) {
         var q = JSON.parse(req.query.data);
         var data = [];
 
-        var buildingSearch = "SELECT name,st_asgeojson(geom) as geom FROM buildings WHERE name = '" + q.name + "'";
-        var onCampus = "SELECT name,st_asgeojson(geom) as geom FROM " + '"onCampus"' + " WHERE name ='" + q.name + "'";
-        var offCampus = "SELECT name,st_asgeojson(geom) as geom FROM " + '"offCampus"' + "WHERE name ='" + q.name + "'";
-        var park = "SELECT name,st_asgeojson(geom) as geom FROM " + '"parks"' + " WHERE name ='" + q.name + "'";
+        var buildingSearch = "SELECT name,st_asgeojson(geom) as geom, geom as geom_org FROM buildings WHERE name = '" + q.name + "'";
+        var onCampus = "SELECT name,st_asgeojson(geom) as geom, geom as geom_org FROM " + '"onCampus"' + " WHERE name ='" + q.name + "'";
+        var offCampus = "SELECT name,st_asgeojson(geom) as geom, geom as geom_org FROM " + '"offCampus"' + "WHERE name ='" + q.name + "'";
+        var park = "SELECT name,st_asgeojson(geom) as geom, geom as geom_org FROM " + '"parks"' + " WHERE name ='" + q.name + "'";
 
         var search = buildingSearch + " UNION " + onCampus + " UNION " + offCampus + " UNION " + park;
 
@@ -43,10 +43,59 @@ module.exports = function (app) {
     app.get('/searchByRadius', function (req, res) {
 
         var q = JSON.parse(req.query.data);
-        var data = []; 
+        var data = [];
 
-        var search = "SELECT name,st_asgeojson(geom) as geom FROM buildings WHERE ST_Distance_Sphere(st_asgeojson(geom), ST_MakePoint(" + q.bounds + ")) <= " + q.radius + " * 1609.34";
+        var building = q.buildings;
+        var onCampus = q.onCampus;
+        var offCampus = q.offCampus;
+        var parks = q.parks;
+
+
+        var buildingSearch = " select name,st_asgeojson(geom) as geom from " + 'buildings' + " WHERE  ST_DWithin(geom, '" + q.geom_org + "', " + q.radius + ")";
+        var onCampusSearch = " select name,st_asgeojson(geom) as geom from " + '"onCampus"' + " WHERE  ST_DWithin(geom, '" + q.geom_org + "', " + q.radius + ")";
+        var offCampusSearch = " select name,st_asgeojson(geom) as geom from " + '"offCampus"' + " WHERE  ST_DWithin(geom, '" + q.geom_org + "', " + q.radius + ")";
+        var parkSearch = " select name,st_asgeojson(geom) as geom from " + '"parks"' + " WHERE  ST_DWithin(geom, '" + q.geom_org + "', " + q.radius + ")";
+
+        var search = "";
         
+        if (building)
+        {
+            if (search == "")
+            {
+                search = buildingSearch;
+            }
+            else
+            {
+                search += " UNION " + buildingSearch;
+            }
+        }
+        if (onCampus) {
+            if (search == "") {
+                search = onCampusSearch;
+            }
+            else {
+                search += " UNION " + onCampusSearch;
+            }
+        }
+        if (offCampus) {
+            if (search == "") {
+                search = offCampusSearch;
+            }
+            else {
+                search += " UNION " + offCampusSearch;
+            }
+        }
+        if (parks) {
+            if (search == "") {
+                search = parkSearch;
+            }
+            else {
+                search += " UNION " + parkSearch;
+            }
+        }
+ 
+
+
         console.log(search);
 
         var query = client.query(search);
