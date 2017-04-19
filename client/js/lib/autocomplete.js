@@ -109,7 +109,7 @@ app.directive('autocomplete', function () {
 
             // Default atts
             scope.attrs = {
-                "placeholder": "start typing...",
+                "placeholder": " start typing... ",
                 "class": "form-control",
                 "id": "",
                 "inputclass": "",
@@ -249,6 +249,7 @@ app.directive('autocomplete', function () {
             ng-model="searchParam"\
             placeholder="{{ attrs.placeholder }}"\
             class="{{ attrs.inputclass }}"\
+            style="border:none"\
             tabindex="{{ attrs.tabindex }}"\
             id="{{ attrs.inputid }}"\
             name="{{ attrs.name }}"\

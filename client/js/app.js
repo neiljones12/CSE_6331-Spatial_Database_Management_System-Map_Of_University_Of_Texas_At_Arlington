@@ -146,7 +146,7 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                     $scope.detailedResult.push(data);
                     L.polygon(bounds, { color: "#ff7800", weight: 1 }).addTo(mymap).bindPopup(name);
                     if ($scope.marker) {
-                        L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name).openPopup();
+                        L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name);
                     }
                     // zoom the map to the rectangle bounds
                     //mymap.fitBounds(bounds);
@@ -189,7 +189,7 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                     $scope.detailedResult.push(data);
                     L.polygon(bounds, { color: "#2980b9", weight: 1 }).addTo(mymap).bindPopup(name);
                     if ($scope.marker) {
-                        L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name).openPopup();
+                        L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name);
                     }
                     // zoom the map to the rectangle bounds
                     //mymap.fitBounds(bounds);
@@ -232,7 +232,7 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                     $scope.detailedResult.push(data);
                     L.polygon(bounds, { color: "#8e44ad", weight: 1 }).addTo(mymap).bindPopup(name);
                     if ($scope.marker) {
-                        L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name).openPopup();
+                        L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name);
                     }
                     // zoom the map to the rectangle bounds
                     //mymap.fitBounds(bounds);
@@ -275,7 +275,7 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                     $scope.detailedResult.push(data);
                     L.polygon(bounds, { color: "#27ae60", weight: 1 }).addTo(mymap).bindPopup(name);
                     if ($scope.marker) {
-                        L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name).openPopup();
+                        L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name);
                     }
                     // zoom the map to the rectangle bounds
                     //mymap.fitBounds(bounds);
@@ -380,7 +380,7 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                     L.polygon(bounds, { color: "#27ae60", weight: 1 }).addTo(mymap).bindPopup(name);
 
                     if ($scope.marker) {
-                        L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name).openPopup();
+                        L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name);
                     }
 
 
@@ -427,7 +427,7 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                                     $scope.detailedResult.push(data);
                                     L.polygon(bounds, { color: "#d35400", weight: 1 }).addTo(mymap).bindPopup(name);
                                     if ($scope.marker) {
-                                        L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name).openPopup();
+                                        L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name);
                                     }
 
                                     // zoom the map to the rectangle bounds
