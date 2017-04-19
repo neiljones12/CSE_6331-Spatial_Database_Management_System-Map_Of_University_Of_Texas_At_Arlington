@@ -15,6 +15,7 @@ module.exports = function (app) {
         res.json(data);
     });
 
+
     app.get('/searchByName', function (req, res) {
 
         var q = JSON.parse(req.query.data);
@@ -57,15 +58,12 @@ module.exports = function (app) {
         var parkSearch = " select name,st_asgeojson(geom) as geom from " + '"parks"' + " WHERE  ST_DWithin(geom, '" + q.geom_org + "', " + q.radius + ")";
 
         var search = "";
-        
-        if (building)
-        {
-            if (search == "")
-            {
+
+        if (building) {
+            if (search == "") {
                 search = buildingSearch;
             }
-            else
-            {
+            else {
                 search += " UNION " + buildingSearch;
             }
         }
@@ -93,7 +91,6 @@ module.exports = function (app) {
                 search += " UNION " + parkSearch;
             }
         }
- 
 
 
         console.log(search);

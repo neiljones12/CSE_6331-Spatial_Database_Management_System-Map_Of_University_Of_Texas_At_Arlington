@@ -286,6 +286,64 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
         });
     }
 
+    $scope.directions = function () {
+        var data = { name: $scope.start };
+        var bounds = [];
+        $http({
+            url: "/searchByName",
+            method: "get",
+            params: { data: data }
+        }).then(function successCallback(response) {
+            for (var i = 0; i < response.data.length; i++) {
+                var coordinates = JSON.parse(response.data[i].geom);
+                for (var j = 0; j < coordinates.coordinates.length; j++) {
+
+                    var result = [];
+                    for (var k = 0; k < coordinates.coordinates[j][0].length; k++) {
+                        var r = coordinates.coordinates[j][0][k];
+                        var data = [];
+                        data.push(r[1]);
+                        data.push(r[0]);
+                        result.push(data);
+                    }
+                }
+
+                bounds.push(result[0]);
+
+                var data2 = { name: $scope.end };
+                $http({
+                    url: "/searchByName",
+                    method: "get",
+                    params: { data: data2 }
+                }).then(function successCallback(response) {
+                    for (var i = 0; i < response.data.length; i++) {
+                        var coordinates = JSON.parse(response.data[i].geom);
+                        for (var j = 0; j < coordinates.coordinates.length; j++) {
+                            var result = [];
+                            for (var k = 0; k < coordinates.coordinates[j][0].length; k++) {
+                                var r = coordinates.coordinates[j][0][k];
+                                var data = [];
+                                data.push(r[1]);
+                                data.push(r[0]);
+                                result.push(data);
+                            }
+                        }
+                    }
+
+                    bounds.push(result[0]);
+                    var routing = L.Routing.control({
+                        waypoints: [
+                            L.latLng(bounds[0]),
+                            L.latLng(bounds[1])
+                        ],
+                    }).addTo(mymap);
+
+                    $scope.result.push({name:"Directions shown on map"});
+                })
+            }
+        })
+    }
+
     $scope.find = function () {
         var data = { name: $scope.from };
 
@@ -298,9 +356,11 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
             for (var i = 0; i < response.data.length; i++) {
                 var name = response.data[i].name;
 
-                var data = { name: name, type: "" };
+                var data = { name: name, type: "search" };
                 $scope.result.push(data);
+
                 var geom_org = response.data[i].geom_org;
+
                 var coordinates = JSON.parse(response.data[i].geom);
                 for (var j = 0; j < coordinates.coordinates.length; j++) {
 
@@ -328,7 +388,7 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
 
                         var radius = $scope.radius * 1609.34; //converting meters to miles
 
-                        var data = { radius: radius/170000, geom_org: geom_org, buildings: $scope.buildings, onCampus: $scope.onCampus, offCampus: $scope.offCampus, parks: $scope.parks };
+                        var data = { radius: radius / 170000, geom_org: geom_org, buildings: $scope.buildings, onCampus: $scope.onCampus, offCampus: $scope.offCampus, parks: $scope.parks };
 
 
                         var circle = L.circle(bounds[0], {
@@ -347,7 +407,7 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                             for (var i = 0; i < response.data.length; i++) {
                                 var name = response.data[i].name;
 
-                                var data = { name: name, type: "parks" };
+                                var data = { name: name, type: "search" };
                                 $scope.result.push(data);
                                 var coordinates = JSON.parse(response.data[i].geom);
                                 for (var j = 0; j < coordinates.coordinates.length; j++) {
@@ -365,10 +425,11 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                                     var data = { name: name, bounds: bounds };
 
                                     $scope.detailedResult.push(data);
-                                    L.polygon(bounds, { color: "#27ae60", weight: 1 }).addTo(mymap).bindPopup(name);
+                                    L.polygon(bounds, { color: "#d35400", weight: 1 }).addTo(mymap).bindPopup(name);
                                     if ($scope.marker) {
                                         L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name).openPopup();
                                     }
+
                                     // zoom the map to the rectangle bounds
                                     //mymap.fitBounds(bounds);
                                 }

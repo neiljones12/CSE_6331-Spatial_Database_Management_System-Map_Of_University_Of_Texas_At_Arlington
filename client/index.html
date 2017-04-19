@@ -15,6 +15,25 @@
     <link href="js/lib/leaflet/leaflet.css" rel="stylesheet" />
     <script src="js/lib/leaflet/leaflet.js"></script>
     <script src="js/lib/autocomplete.js"></script>
+    <script src="js/lib/leaflet-routing-machine.js"></script>
+
+    <style>
+        .leaflet-control-container .leaflet-routing-container-hide {
+            display: none;
+        }
+
+        .leaflet-top leaflet-right{
+            display: none;
+        }
+
+        .leaflet-routing-container leaflet-bar leaflet-control{
+            display: none;
+        }
+
+        .leaflet-routing-alternatives-container{
+             display: none;
+        }
+    </style>
 </head>
 <body ng-controller="appController">
     <div class="" style="padding: 50px">
@@ -26,15 +45,15 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-5"> 
+            <div class="col-lg-5">
                 <div class="card">
                     <div class="card-block">
-                        <h2>Search</h2><hr /> 
+                        <h2>Search</h2><hr />
                         <input type="checkbox" ng-model="buildings" /> Buildings
                         <input type="checkbox" ng-model="onCampus" /> On campus Apartments
                         <input type="checkbox" ng-model="offCampus" /> Off Campus Apartments
-                        <input type="checkbox" ng-model="parks" /> Parks 
-                        <hr /> 
+                        <input type="checkbox" ng-model="parks" /> Parks
+                        <hr />
 
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Range</label>
@@ -48,7 +67,7 @@
                                 <autocomplete ng-model="from" data="names"></autocomplete>
                             </div>
                         </div>
-                        
+
                         <hr />
                         <button type="button" class="btn btn-secondary" ng-click="search()">Search</button>
                         <button type="button" class="btn btn-secondary" ng-click="clear()">Clear</button>
@@ -56,7 +75,7 @@
                         <input type="checkbox" ng-model="marker" /> Show marker
                     </div>
                 </div>
-                <br/>
+                <br />
                 <div class="card">
                     <div class="card-block">
                         <button type="button" class="btn btn-secondary pull-right" ng-click="directions()">Show</button><h2>Directions</h2> <hr />
@@ -73,10 +92,10 @@
                             </div>
                         </div>
                     </div>
-                </div> 
-            </div> 
-        </div> 
-        <br/>
+                </div>
+            </div>
+        </div>
+        <br />
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -87,9 +106,10 @@
                             <br />
                         </div>
                     </div>
-                </div> 
-            </div> 
+                </div>
+            </div>
         </div>
     </div>
+
 </body>
 </html>
