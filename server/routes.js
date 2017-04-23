@@ -93,7 +93,7 @@ module.exports = function (app) {
         }
 
 
-        console.log(search);
+        //console.log(search);
 
         var query = client.query(search);
 
