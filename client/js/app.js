@@ -22,92 +22,94 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
         $scope.result = [];
         $scope.detailedResult = [];
 
+        $scope.customSearchString = "";
+
         $scope.radius = "";
         $scope.from = "";
 
         $scope.names = [
-"Engineering Research Building",
-"Nedderman Hall",
-"Geoscience",
-"Engineering Lab Building",
-"Woolf Hall",
-"Science Hall",
-"Preston Hall",
-"Ransom Hall",
-"Carlisle Hall",
-"College Hall",
-"Business Building",
-"Trimble Hall",
-"Hammond Hall",
-"Life Science Building",
-"University Hall",
-"Davis Hall",
-"Texas Hall",
-"Pickard Hall",
-"Aerodynamics Research Building",
-"Continuing education / workforce Development",
-"DED Technical Training Center",
-"University Center",
-"Maveric Activities Center",
-"Physical Education",
-"Campus Center",
-"Nanotech Building",
-"Cappa Building",
-"Fine Arts Building",
-"Smart Hospital",
-"Planetarium",
-"Swift Center",
-"Veterans Assistance Center",
-"Child Development Center",
-"Environment Health and Safety",
-"University Police",
-"Office and Classroom Building",
-"Studio Arts Center",
-"Amphibian and reptile diversity research center",
-"Civil engineering lab building",
-"Wetsel Building",
-"Arbor Oaks",
-"Arlington Hall",
-"Brazos House",
-"Centennial Court",
-"Center Point",
-"Cooper Chase",
-"Maple Square",
-"Garden Club",
-"Kalpana Chawla Hall",
-"Lipscomb Hall",
-"Timberbrook",
-"Meadow Run",
-"The Heights on Pecan",
-"The Lofts at College park",
-"Trinity House",
-"University Village",
-"Vandergiff Hall",
-"Campus Edge",
-"The Arlie",
-"Heatherway",
-"Midtown Arlington Apartments",
-"Caribe Apartments",
-"Mary Kay Apartments",
-"Zen Apartments",
-"Four oak Apartments",
-"South Campus Apartments",
-"University Terrace Apartments",
-"Mesa Apartments",
-"Maverick Place Apartments",
-"Linda Vista Apartments",
-"Sam Maverick Apartments",
-"Pepper Mill Apartments",
-"Pinewoods Apartments",
-"Vintage Pads",
-"Summit Plaza Apartments",
-"Intramural Fields",
-"Allan Saxe Softball park",
-"Clay Gould Ballpark",
-"College hills park",
-"Doug Russel Park",
-"The green at college park",
-"UTA Tennis Center"];
+            "Engineering Research Building",
+            "Nedderman Hall",
+            "Geoscience",
+            "Engineering Lab Building",
+            "Woolf Hall",
+            "Science Hall",
+            "Preston Hall",
+            "Ransom Hall",
+            "Carlisle Hall",
+            "College Hall",
+            "Business Building",
+            "Trimble Hall",
+            "Hammond Hall",
+            "Life Science Building",
+            "University Hall",
+            "Davis Hall",
+            "Texas Hall",
+            "Pickard Hall",
+            "Aerodynamics Research Building",
+            "Continuing education / workforce Development",
+            "DED Technical Training Center",
+            "University Center",
+            "Maveric Activities Center",
+            "Physical Education",
+            "Campus Center",
+            "Nanotech Building",
+            "Cappa Building",
+            "Fine Arts Building",
+            "Smart Hospital",
+            "Planetarium",
+            "Swift Center",
+            "Veterans Assistance Center",
+            "Child Development Center",
+            "Environment Health and Safety",
+            "University Police",
+            "Office and Classroom Building",
+            "Studio Arts Center",
+            "Amphibian and reptile diversity research center",
+            "Civil engineering lab building",
+            "Wetsel Building",
+            "Arbor Oaks",
+            "Arlington Hall",
+            "Brazos House",
+            "Centennial Court",
+            "Center Point",
+            "Cooper Chase",
+            "Maple Square",
+            "Garden Club",
+            "Kalpana Chawla Hall",
+            "Lipscomb Hall",
+            "Timberbrook",
+            "Meadow Run",
+            "The Heights on Pecan",
+            "The Lofts at College park",
+            "Trinity House",
+            "University Village",
+            "Vandergiff Hall",
+            "Campus Edge",
+            "The Arlie",
+            "Heatherway",
+            "Midtown Arlington Apartments",
+            "Caribe Apartments",
+            "Mary Kay Apartments",
+            "Zen Apartments",
+            "Four oak Apartments",
+            "South Campus Apartments",
+            "University Terrace Apartments",
+            "Mesa Apartments",
+            "Maverick Place Apartments",
+            "Linda Vista Apartments",
+            "Sam Maverick Apartments",
+            "Pepper Mill Apartments",
+            "Pinewoods Apartments",
+            "Vintage Pads",
+            "Summit Plaza Apartments",
+            "Intramural Fields",
+            "Allan Saxe Softball park",
+            "Clay Gould Ballpark",
+            "College hills park",
+            "Doug Russel Park",
+            "The green at college park",
+            "UTA Tennis Center"];
     };
 
     $scope.clear = function () {
@@ -338,7 +340,7 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                         ],
                     }).addTo(mymap);
 
-                    $scope.result.push({name:"Directions shown on map"});
+                    $scope.result.push({ name: "Directions shown on map" });
                 })
             }
         })
@@ -466,6 +468,48 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
         }
 
         $scope.find();
+    }
+
+    $scope.customSearch = function () {
+        var data = $scope.customSearchString;
+        $http({
+            url: "/customSearch",
+            method: "get",
+            params: { data: data }
+        }).then(function successCallback(response) {
+            for (var i = 0; i < response.data.length; i++) {
+                var name = response.data[i].name;
+
+                var data = { name: name, type: "custom" };
+                $scope.result.push(data);
+
+                var coordinates = JSON.parse(response.data[i].geom);
+                for (var j = 0; j < coordinates.coordinates.length; j++) {
+
+                    var result = [];
+                    for (var k = 0; k < coordinates.coordinates[j][0].length; k++) {
+                        var r = coordinates.coordinates[j][0][k];
+                        var data = [];
+                        data.push(r[1]);
+                        data.push(r[0]);
+                        result.push(data);
+                    }
+
+                    var bounds = result;
+                    var data = { name: name, bounds: bounds };
+
+                    $scope.detailedResult.push(data);
+                    L.polygon(bounds, { color: "#2c3e50", weight: 1 }).addTo(mymap).bindPopup(name);
+                    if ($scope.marker) {
+                        L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name);
+                    }
+                    // zoom the map to the rectangle bounds
+                    //mymap.fitBounds(bounds);
+                }
+            }
+        }, function errorCallback(response) {
+            console.log(response);
+        });
     }
 
     $scope.popup = function (name) {

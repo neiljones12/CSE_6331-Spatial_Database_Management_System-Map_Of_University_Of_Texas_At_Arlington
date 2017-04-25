@@ -166,4 +166,24 @@ module.exports = function (app) {
         });
     });
 
+    app.get('/customSearch', function (req, res) {
+
+        var q = req.query;
+        var data = [];
+
+        var customSearch = q.data;
+
+        //console.log(customSearch);
+
+        var query = client.query(customSearch);
+
+        query.on('row', function (row) {
+            data.push(row);
+        });
+
+        query.on('end', function () {
+            res.json(data);
+        });
+    });
+
 };
