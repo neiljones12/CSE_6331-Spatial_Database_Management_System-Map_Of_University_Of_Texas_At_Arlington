@@ -146,7 +146,7 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                     var data = { name: name, bounds: bounds };
 
                     $scope.detailedResult.push(data);
-                    L.polygon(bounds, { color: "#ff7800", weight: 1 }).addTo(mymap).bindPopup(name);
+                    L.polygon(bounds, { color: "#ff7800", weight: 1 }).addTo(mymap).bindPopup($scope.detailedResult[i].name).bindTooltip(name, { permanent: true, direction: "center" }).openTooltip()
                     if ($scope.marker) {
                         L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name);
                     }
@@ -189,7 +189,7 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                     var data = { name: name, bounds: bounds };
 
                     $scope.detailedResult.push(data);
-                    L.polygon(bounds, { color: "#2980b9", weight: 1 }).addTo(mymap).bindPopup(name);
+                    L.polygon(bounds, { color: "#2980b9", weight: 1 }).addTo(mymap).bindPopup($scope.detailedResult[i].name).bindTooltip(name, { permanent: true, direction: "center" }).openTooltip()
                     if ($scope.marker) {
                         L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name);
                     }
@@ -232,7 +232,8 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                     var data = { name: name, bounds: bounds };
 
                     $scope.detailedResult.push(data);
-                    L.polygon(bounds, { color: "#8e44ad", weight: 1 }).addTo(mymap).bindPopup(name);
+                    L.polygon(bounds, { color: "#8e44ad", weight: 1 }).addTo(mymap).bindPopup($scope.detailedResult[i].name).bindTooltip(name, { permanent: true, direction: "center" }).openTooltip();
+
                     if ($scope.marker) {
                         L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name);
                     }
@@ -275,7 +276,8 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                     var data = { name: name, bounds: bounds };
 
                     $scope.detailedResult.push(data);
-                    L.polygon(bounds, { color: "#27ae60", weight: 1 }).addTo(mymap).bindPopup(name);
+                    L.polygon(bounds, { color: "#27ae60", weight: 1 }).addTo(mymap).bindPopup($scope.detailedResult[i].name).bindTooltip(name, { permanent: true, direction: "center" }).openTooltip();
+
                     if ($scope.marker) {
                         L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name);
                     }
@@ -379,19 +381,16 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                     var data = { name: name, bounds: bounds };
 
                     $scope.detailedResult.push(data);
-                    L.polygon(bounds, { color: "#27ae60", weight: 1 }).addTo(mymap).bindPopup(name);
-
+                    L.polygon(bounds, { color: "#27ae60", weight: 1 }).addTo(mymap).bindPopup($scope.detailedResult[i].name).bindTooltip(name, { permanent: true, direction: "center" }).openTooltip();
                     if ($scope.marker) {
                         L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name);
                     }
-
 
                     if ($scope.radius != "" && $scope.radius > -1) {
 
                         var radius = $scope.radius * 1609.34; //converting meters to miles
 
                         var data = { radius: radius / 170000, geom_org: geom_org, buildings: $scope.buildings, onCampus: $scope.onCampus, offCampus: $scope.offCampus, parks: $scope.parks };
-
 
                         var circle = L.circle(bounds[0], {
                             color: 'red',
@@ -427,7 +426,8 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                                     var data = { name: name, bounds: bounds };
 
                                     $scope.detailedResult.push(data);
-                                    L.polygon(bounds, { color: "#d35400", weight: 1 }).addTo(mymap).bindPopup(name);
+                                    L.polygon(bounds, { color: "#d35400", weight: 1 }).addTo(mymap).bindPopup($scope.detailedResult[i].name).bindTooltip(name, { permanent: true, direction: "center" }).openTooltip();
+
                                     if ($scope.marker) {
                                         L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name);
                                     }
@@ -499,7 +499,8 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                     var data = { name: name, bounds: bounds };
 
                     $scope.detailedResult.push(data);
-                    L.polygon(bounds, { color: "#2c3e50", weight: 1 }).addTo(mymap).bindPopup(name);
+                    L.polygon(bounds, { color: "#2c3e50", weight: 1 }).addTo(mymap).bindPopup($scope.detailedResult[i].name).bindTooltip(name, { permanent: true, direction: "center" }).openTooltip();
+
                     if ($scope.marker) {
                         L.marker($scope.detailedResult[i].bounds[0]).addTo(mymap).bindPopup($scope.detailedResult[i].name);
                     }

@@ -6,4 +6,4 @@ app.use(express.static(__dirname + '/client')); 		// statics
 require('./server/routes.js')(app);						// routes
 
 app.listen(port);										// let the games begin!
-console.log("Web server listening on port " + port);
+console.log("GIS server listening on port " + port);
