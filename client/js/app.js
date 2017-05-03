@@ -299,6 +299,7 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
             params: { data: data }
         }).then(function successCallback(response) {
             for (var i = 0; i < response.data.length; i++) {
+                var name = response.data[i].name;
                 var coordinates = JSON.parse(response.data[i].geom);
                 for (var j = 0; j < coordinates.coordinates.length; j++) {
 
@@ -313,6 +314,7 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                 }
 
                 bounds.push(result[0]);
+                L.polygon(result, { color: "#27ae60", weight: 1 }).addTo(mymap).bindPopup(name).bindTooltip(name, { permanent: true, direction: "center" }).openTooltip();
 
                 var data2 = { name: $scope.end };
                 $http({
@@ -321,6 +323,7 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                     params: { data: data2 }
                 }).then(function successCallback(response) {
                     for (var i = 0; i < response.data.length; i++) {
+                        var name = response.data[i].name;
                         var coordinates = JSON.parse(response.data[i].geom);
                         for (var j = 0; j < coordinates.coordinates.length; j++) {
                             var result = [];
@@ -335,12 +338,16 @@ app.controller('appController', ['$scope', 'dataServ', '$http', '$window', funct
                     }
 
                     bounds.push(result[0]);
+
+                    L.polygon(result, { color: "#27ae60", weight: 1 }).addTo(mymap).bindPopup(name).bindTooltip(name, { permanent: true, direction: "center" }).openTooltip();
+
                     var routing = L.Routing.control({
                         waypoints: [
                             L.latLng(bounds[0]),
                             L.latLng(bounds[1])
                         ],
                     }).addTo(mymap);
+
 
                     $scope.result.push({ name: "Directions shown on map" });
                 })
